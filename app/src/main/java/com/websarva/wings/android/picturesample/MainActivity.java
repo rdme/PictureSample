@@ -42,8 +42,14 @@ public class MainActivity extends AppCompatActivity implements ImageItemFragment
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void showCameraFragment() {
-        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.CAMERA},1001);
+        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                || checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+            requestPermissions(new String[]{
+                    Manifest.permission.CAMERA,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+            }, 1001);
             return;
         }
 
@@ -53,14 +59,13 @@ public class MainActivity extends AppCompatActivity implements ImageItemFragment
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode != 1001) {
-            return;
-        }
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            CameraFragment f = new CameraFragment();
-            this.setFragment(f);
-        } else {
+        if (requestCode == 1001) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                CameraFragment f = new CameraFragment();
+                this.setFragment(f);
+            } else {
 
+            }
         }
     }
 }
